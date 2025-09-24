@@ -1,0 +1,236 @@
+﻿@model Student_manage.Models.Users
+@{
+                /**/
+
+                /**/
+
+                Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>User Login</title>
+
+    <!-- jQuery and plugins -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <!-- Bootstrap (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: url('../Content/images/LoginBack.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.85);
+            width: 350px;
+            margin: 160px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: #333;
+            border-top: 5px solid #2e6da4;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2e6da4;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .field-validation-error {
+            color: red !important;
+            font-size: 0.9rem; 
+        }
+
+        .btn {
+            width: 107%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #2e6da4;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #23527c;
+            }
+
+        a {
+            color: #2e6da4;
+            font-size: 14px;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        #ajaxLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: none;
+        }
+
+            #ajaxLoader .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            #ajaxLoader .spinner {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border: 8px solid #f3f3f3;
+                border-top: 8px solid #3498db;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                animation: spin 1s linear infinite;
+            }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>User Login</h2>
+        <form id="userLoginForm" action="/Account/UserLogin" method="post">
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div id="ajaxLoader">
+                <div class="overlay"></div>
+                <div class="spinner"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Enter username", id = "Username" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "error text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter password", id = "Password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error text-danger" })
+            </div>
+
+            <button type="submit" id="loginBtn" class="btn">Login</button>
+
+            <div>
+                <p><a href="/Account/ResetPassword">Forget Password</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            // Attach validation rules
+            $("#userLoginForm").validate({
+                rules: {
+                    Username: { required: true },
+                    Password: { required: true }
+                },
+                messages: {
+                    Username: { required: "Please enter your username" },
+                    Password: { required: "Please enter your password" }
+                },
+                errorClass: "error text-danger",
+                errorElement: "span"
+            });
+
+            $("#userLoginForm").submit(function (e) {
+                e.preventDefault();
+                if (!$(this).valid()) {
+                    return;
+                }
+                var url = $(this).attr("action");
+                var form = $(this);
+                var $button = $("#loginBtn");
+                $button.prop("disabled", true).text("Logging in...");
+                $("#ajaxLoader").fadeIn();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function (response) {
+                        $(".server-error").remove(); // remove old server errors
+                        if (response.success) {
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            // Show error below password field
+                            $("<span class='server-error error text-danger'>" + response.message + "</span>")
+                                .insertAfter("#Password");
+                            // Optional fade out
+                            setTimeout(function () {
+                                $(".server-error").fadeOut();
+                            }, 4000);
+                        }
+                    },
+                    error: function () {
+                        $(".server-error").remove();
+                        $("<span class='server-error error text-danger'>An error occurred. Please try again.</span>")
+                            .insertAfter("#Password");
+                    },
+                    complete: function () {
+                        $button.prop("disabled", false).text("Login");
+                        $("#ajaxLoader").fadeOut();
+                    },                   
+                    complete: function () {
+                        $button.prop()
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

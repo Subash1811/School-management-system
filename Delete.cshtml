@@ -1,0 +1,47 @@
+﻿@model Student_manage.Models.MasterData
+
+<style>
+    .container-fluid {
+        margin-top: 20px;
+        /* padding-right: 15px; */
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: 220px;
+    }
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<div class=" container-fluid">
+    @if (TempData["SuccessMessage"] != null)
+    {
+      <div class="alert alert-success" id="successMessage">@TempData["SuccessMessage"]</div>
+    }
+
+    <h2>Delete Admission Category</h2>
+    <h4>Are you sure you want to delete this?</h4>
+
+    <div>
+        <strong>@Model.Admission_Category</strong>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Delete</button>
+        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })       
+    }
+
+</div>
+
+<script>
+    // Auto-hide success message after 3 seconds
+    setTimeout(function () {
+        $('#successMessage').fadeOut('slow');
+    },3000);
+</script>

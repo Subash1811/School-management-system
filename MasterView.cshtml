@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Master Page";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Use your layout if needed
+}
+<style>
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<h2 class="text-center">Master Page</h2>
+
+<div class="text-center mt-4">
+    <a href="@Url.Action("Index", "StateMaster")" class="btn btn-primary px-4">
+        State Master 
+    </a>
+    <a href="@Url.Action("Index", "AdmissionCategory")" class="btn btn-primary px-4">
+        Fees Categoery Master
+    </a>
+</div>
+<div class=" text-center " style="margin-top:6px;margin-right:45px;">
+    <a href="@Url.Action("SearchStudents", "StudentRegister")" class="btn btn-primary px-4">
+        Back
+    </a>
+</div>>

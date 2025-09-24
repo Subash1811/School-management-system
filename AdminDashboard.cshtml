@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Use your layout if needed
+}
+
+<h2 class="text-center">Welcome Admin</h2>
+
+<div class="text-center mt-4">
+    <a href="@Url.Action("AdminstudentList", "StudentRegister")" class="btn btn-primary px-4">
+        View Registered Students
+    </a>
+</div>

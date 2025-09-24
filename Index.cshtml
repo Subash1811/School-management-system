@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Student_manage.Models.State_Master>
+@{
+    Layout = "~/Views/Shared/_StateLayout.cshtml";
+    ViewBag.Title = "State List";
+}
+
+<style>
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-center">State Master List</h3>
+    <a href="@Url.Action("Create", "StateMaster")" class="btn btn-success">Create</a>
+</div>
+<!--  Show error message here -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>State Name</th>
+            <th>Created By</th>
+            <th>Created On</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.State_ID</td>
+                <td>@item.State_Name</td>
+                <td>@item.Created_by</td>
+                <td>@(item.Created_on?.ToString("yyyy-MM-dd"))</td>
+                <td>
+                    @if (item.Active == true)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else if (item.InActive == true)
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                    else
+                    {
+                        <span>Unknown</span>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.State_ID }, new { @class = "btn btn-sm btn-primary" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.State_ID }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("SearchStudents", "StudentRegister")" class="btn btn-primary">Back</a>

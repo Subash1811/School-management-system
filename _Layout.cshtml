@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Student Management</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+        }
+
+        /* Fixed Top Header Bar */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2980b9;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1001;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+            .header h2 {
+                margin: 0;
+                font-size: 22px;
+                font-weight: normal;
+            }
+
+        /* Menu Button inside header */
+        .menu-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+            .menu-btn div {
+                height: 4px;
+                background: white;
+                margin: 5px 0;
+                transition: all 0.3s ease;
+            }
+
+            /* Animation for close (X) */
+            .menu-btn.open .line1 {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .menu-btn.open .line2 {
+                opacity: 0;
+            }
+
+            .menu-btn.open .line3 {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+
+        /* Logout button position */
+        .logout-btn {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+            .logout-btn img {
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+            }
+
+                .logout-btn img:hover {
+                    transform: scale(1.1);
+                }
+
+
+        /* Side Menu */
+        nav {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 200px;
+            height: 100%;
+            background-color: #48759f;            
+            padding-top: 60px;
+            transition: left 0.4s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+            nav.open {
+                left: 0;
+            }
+
+            nav ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                nav ul li {
+                    padding: 15px 20px;
+                    font-size: 18px;
+                }
+
+                    nav ul li a {
+                        color: #fff;
+                        text-decoration: none;
+                        font-weight: bold;
+                        display: block;
+                    }
+
+                        nav ul li a:hover {
+                            background-color: #fff;
+                            border-radius: 5px;
+                        }
+
+        /* Main Content (push down for fixed header) */
+        .main-content {
+            padding: 90px 20px 20px; /* top padding to avoid overlap */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Top Header -->
+    <div class="header">
+        <!-- Menu Button -->
+        <div class="menu-btn" id="menuBtn">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        <h2>Welcome, @Session["Username"]</h2>
+
+        <a href="@Url.Action("UserLogin", "Account")" class="logout-btn" title="Logout">
+            <img src="~/Content/images/power.png" alt="Logout" />
+        </a>
+    </div>
+
+    <!-- Sliding Menu -->
+    <nav id="sideNav">
+        <ul>
+            <li>@Html.ActionLink("Home", "SearchStudents", "StudentRegister")</li>
+            <li>@Html.ActionLink("New Register", "Create", "StudentRegister")</li>
+            <li>@Html.ActionLink("Fees Payment", "Create", "FeeStructure")</li>
+            <li>@Html.ActionLink("Master Page", "MasterView", "StateMaster")</li>
+            
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideNav = document.getElementById('sideNav');
+
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('open');
+            sideNav.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

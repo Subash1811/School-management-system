@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Student_manage.Models.StudentRegister>
+
+@{
+    ViewBag.Title = "Registered Student";
+}
+
+
+<style>
+    th, thead {
+        position: sticky;
+        top: 0;
+        background-color: #5DA8E9;
+    }
+
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+    td {
+        background-color: #EFF2F5;
+        font-family:sans-serif;
+    }
+</style>
+
+
+ 
+        <div class="card-header">
+            <h4 >Registered Students</h4>
+        </div>
+      
+            <div class="table-responsive">
+                <table class="table">
+                    <thead >
+                        <tr class="text-center">
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>DOB</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Pincode</th>
+                            <th>Parents</th>
+                            <th>Relation</th>
+                            <th>Created_By</th>
+                            <th>Created_On</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FIRST_NAME</td>
+                                <td>@item.LAST_NAME</td>
+                                <td>@item.DATE_OF_BIRTH.ToString("yyyy-MM-dd")</td>
+                                <td>@item.GENDER</td>
+                                <td>@item.AGE</td>
+                                <td>@item.EMAIL</td>
+                                <td>@item.PHONE</td>
+                                <td>@item.ADDRESS</td>
+                                <td>@item.City_ID</td>
+                                <td>@item.State_ID</td>
+                                <td>@item.PINCODE</td>
+                                <td>@item.PARENTS</td>
+                                <td>@item.RELATIONSHIP</td>
+                                <td>@item.Created_by</td>
+                                <td>@item.Created_on</td>
+                                <td>
+                                    <span class="badge @(item.Active == true ? "bg-success" : "bg-secondary")">
+                                        @(item.Active == true ? "Active" : "InActive")
+                                    </span>
+
+                                </td>
+                                <td class="text-center">
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.STU_ID }, new { @class = "btn btn-sm btn-primary me-1" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.STU_ID }, new { @class = "btn btn-sm btn-danger" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+      
+ 

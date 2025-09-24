@@ -1,0 +1,228 @@
+﻿
+@model Student_manage.ViewModels.StudentSearchViewModel
+
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+
+
+<style>
+
+
+
+    th, thead {
+        top: 0;
+        background-color: #6191bb;
+        width: 80px;
+        margin-left: 190px;
+        max-width: 100%;
+        color: whitesmoke;
+    }
+
+    .container {
+        width: 700px;
+    }
+
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+
+    td {
+        
+        font-family: sans-serif;
+        width: 80px;
+        margin-left: 190px;
+        max-width: 100%;
+    }
+
+    .row {
+        margin-right: -15px;
+      
+    }
+
+    .table-bordered {
+        border: 2px solid #8ca4bb;
+    }
+
+
+    .card {
+        width: auto;
+        margin-left: 200px;
+        background: padding-box;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+    }
+
+
+    .card-body {
+        margin-top: 30px;
+        padding: 20px;
+    }
+
+    td.actions-column {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
+        td.actions-column .btn {
+            margin-top:auto;
+           
+        }
+
+    .btn-primary {
+        margin-top: 30px;
+    }
+
+     /* Even row background color */
+    .table tbody tr:nth-child(even) {
+        background-color: #e2f0f1;
+    }
+
+        /* Optional: Sticky header for table scrolling */
+    .table-responsive thead th {
+        
+        top: 0;
+       /* Bootstrap thead-dark color */
+        color: #fff;
+        z-index: 1;
+    }
+    .table {
+        width: 80px;
+        margin-left: 190px;
+        max-width: 100%;
+    }
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap; /* prevents weird wrapping */
+        }
+
+            .table th:nth-child(3), .table td:nth-child(3) {
+                width: 100px;
+            }
+            /* DOB */
+            .table th:nth-child(5), .table td:nth-child(5) {
+                width: 50px;
+            }
+    /* Age */
+
+
+</style>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="text-center">Student Search</h4>
+
+            @using (Html.BeginForm("SearchStudents", "StudentRegister", FormMethod.Post))
+            {
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-2">
+                        <label class="me-2 mb-0" style="width: 100px;">Student ID</label>
+                        @Html.TextBoxFor(m => m.StudentID, new { @class = "form-control", placeholder = "ID" })
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-2">
+                        <label class="me-2 mb-0" style="width: 100px;">Name</label>
+                        @Html.TextBoxFor(m => m.FIRST_NAME, new { @class = "form-control", placeholder = "Name" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-2">
+                        <label class="me-2 mb-0" style="width: 100px;">Date of Birth</label>
+                        @Html.TextBoxFor(m => m.DATE_OF_BIRTH, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-2">
+                        <label class="me-2 mb-0" style="width: 100px;">Phone</label>
+                        @Html.TextBoxFor(m => m.PHONE, new { @class = "form-control", placeholder = "Phone" })
+                    </div>
+                </div>
+
+                <div class="text-center mt-4 ">
+                    <input type="submit" value="Search" class="btn btn-primary px-4" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="text-center">
+    <h4>Registered Students Records</h4>
+</div>
+
+@if (Model.Results != null && Model.Results.Any())
+{
+    <div style="max-height: 510px; overflow-y: scroll;" class="table-responsive">
+       
+          <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>Parents</th>
+                    <th>Relation</th>
+                    <th>Created_By</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Results)
+                {
+                <tr>
+                    <td>@item.STU_ID</td>
+                    <td>@item.FIRST_NAME @item.LAST_NAME</td>
+                    <td>@item.DATE_OF_BIRTH.ToShortDateString()</td>
+                    <td>@item.GENDER</td>
+                    <td>@item.AGE</td>
+                    <td>@item.EMAIL</td>
+                    <td>@item.PHONE</td>
+                    <td>@item.ADDRESS</td>
+                    <td>@item.PINCODE</td>
+                    <td>@item.PARENTS</td>
+                    <td>@item.RELATIONSHIP</td>
+                    <td>@item.Created_by</td>
+                    <td>
+                        <span class="badge @(item.Active == true ? "bg-success" : "bg-secondary")">
+                            @(item.Active == true ? "Active" : "InActive")
+                        </span>
+                    </td>
+                    <td class="actions-column">
+                        <a href="@Url.Action("Edit", "StudentRegister", new { id = item.STU_ID })"
+                           class="btn btn-primary btn-sm">
+                            Edit
+                        </a>
+                    </td>
+
+                </tr>
+                }
+            </tbody>
+          </table>      
+    </div>
+}
+
+else if (Model.Results != null)
+{  <div class="text-center">
+         <p class="text-danger mt-3">No students found for the given search criteria.</p>
+    </div>
+    
+}
+
+
+

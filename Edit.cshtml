@@ -1,0 +1,373 @@
+﻿@model Student_manage.Models.StudentRegister
+
+@{
+    /**/
+
+    ViewBag.Title = "Edit Student";
+}
+<style>
+    body {
+        font-family: Arial;
+        background: url('../Content/images/backimage.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .container-fluid {
+        margin-top: 20px;
+        /* padding-right: 15px; */
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .back {
+        margin-top: 7px;
+        /*padding-right: 15px;*/
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: 200px;
+    }
+    .card {
+       
+        margin-left: 200px;
+        margin-top: 60px;
+        border-radius: 30px;
+        box-shadow: 0 0 3px rgba(0,0,0,1);
+    }
+
+    h3 {
+        font-weight: bolder;
+        line-height: 2em;
+    }
+
+
+    .card-header {
+        color: #fff;
+        background-color: #337ab7;
+        height: 50px;
+        text-transform: uppercase;
+        border-radius: 10px;
+    }
+
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .form-control:hover,
+    .form-control:focus,
+    .form-select:hover,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        transition: all 0.3s ease-in-out;
+        outline: none;
+    }
+
+
+    .btn-success {
+        margin-bottom: 10px;
+    }
+</style>
+
+<body>
+
+    <div class="container col-md-12">
+        <div class="card shadow-lg rounded">
+            <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+                <h3>Student Registration</h3>
+            </div>
+
+            @using (Html.BeginForm("Edit", "StudentRegister", FormMethod.Post, new { id = "studentForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+                @Html.HiddenFor(m => m.STU_ID)
+
+
+                <div class="card-body px-3 py-4">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+
+                    <div class="container-fluid">
+                        <!-- Row 1 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.FIRST_NAME, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.FIRST_NAME, new { @class = "form-control", id = "FIRST_NAME" })
+                                        @Html.ValidationMessageFor(m => m.FIRST_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.LAST_NAME, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.LAST_NAME, new { @class = "form-control", id = "LAST_NAME" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.DATE_OF_BIRTH, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.DATE_OF_BIRTH, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "DATA_OF_BIRTH" })
+                                        @Html.ValidationMessageFor(m => m.DATE_OF_BIRTH, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.AGE, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.AGE, new { @class = "form-control", id = "AGE" })
+                                        @Html.ValidationMessageFor(m => m.AGE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.GENDER, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.DropDownListFor(m => m.GENDER, new SelectList(new[] { "Male", "Female", "Other" }), "Select Gender", new { @class = "form-control", id = "GENDER" })
+                                        @Html.ValidationMessageFor(m => m.GENDER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.EMAIL, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.EMAIL, new { @class = "form-control", type = "email", id = "EMAIL" })
+                                        @Html.ValidationMessageFor(m => m.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.PHONE, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.PHONE, new { @class = "form-control", id = "PHONE", type = "tel", maxlength = "10", pattern = "[0-9]{10}", title = "Enter a 10-digit phone number" })
+                                        @Html.ValidationMessageFor(m => m.PHONE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.ADDRESS, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextAreaFor(m => m.ADDRESS, new { @class = "form-control", id = "ADDRESS" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.State_ID, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.DropDownListFor(m => m.State_ID, ViewBag.State_ID as SelectList, "-- Select State --", new { @class = "form-control", id = "State_ID" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="City_ID" class="col-sm-4 col-form-label">City</label>
+                                    <div class="col-sm-6">
+
+                                        @Html.DropDownListFor(m => m.City_ID, ViewBag.City_ID as SelectList, "-- Select City --", new { @class = "form-control", id = "City_ID" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.PINCODE, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.PINCODE, new { @class = "form-control", id = "PINCODE" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.PARENTS, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.PARENTS, new { @class = "form-control", id = "PARENTS" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.RELATIONSHIP, new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-6">
+                                        @Html.TextBoxFor(m => m.RELATIONSHIP, new { @class = "form-control", id = "RELATIONSHIP" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-md-4">
+                                <div class="form-group row">
+                                      @Html.LabelFor(m => m.Created_by, new { @class = "col-sm-4 col-form-label" })
+                                      <div class="col-sm-6">
+                                      @Html.TextBoxFor(m => m.Created_by, new { @class = "form-control" })
+                                      @Html.ValidationMessageFor(m => m.Created_by, "", new { @class = "text-danger" })
+                                      </div>
+                                 </div>
+                            </div>*@
+
+                            @*<div class="col-md-4">
+                                <div class="form-group row">
+                                       @Html.LabelFor(m => m.Created_on, new { @class = "col-sm-4 col-form-label" })
+                                       <div class="col-sm-6">
+                                      @Html.TextBoxFor(m => m.Created_on, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                      @Html.ValidationMessageFor(m => m.Created_on, "", new { @class = "text-danger" })
+                                     </div>
+                                 </div>
+                            </div>*@
+                        </div>
+
+                        <!-- Row 6: Status -->
+                        @*<div class="row">
+                            <div class="col-md-4">
+                                   <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Status</label>
+                                    <div class="col-sm-8 d-flex align-items-center">
+                                        <div class="form-check form-check-inline me-2">
+                                            @Html.RadioButtonFor(m => m.Active, true, new { @class = "form-check-input", id = "active" })
+                                            <label class="form-check-label ms-1" for="active">Active</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            @Html.RadioButtonFor(m => m.Active, false, new { @class = "form-check-input", id = "inactive" })
+                                            <label class="form-check-label ms-1" for="inactive">Inactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                        <div class="text-center mt-4 ">
+                            <input type="submit" value="Update" class="btn btn-success px-5" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="back">
+            <a href="@Url.Action("SearchStudents", "StudentRegister")" class="btn btn-primary">Back</a>
+        </div>
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+
+</body>
+
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+
+            if (successMessage) {
+                // Show alert
+                alert(successMessage);
+            }
+         });
+
+      $('#State_ID').change(function () {
+        var stateId = $(this).val();
+        $.getJSON('@Url.Action("GetCitiesByState", "StudentRegister")', { stateId: stateId }, function (data) {
+            var cityDropdown = $('#City_ID');
+            cityDropdown.empty();
+            cityDropdown.append($('<option>').text('-- Select City --').attr('value', ''));
+            $.each(data, function (i, city) {
+                cityDropdown.append($('<option>').text(city.City_Name).attr('value', city.City_ID));
+            });
+        });
+      })
+          
+    $(document).ready(function () {
+        var selectedStateId = $('#STATE_ID').val();
+        var selectedCityId = '@Model.City_ID'; // Model's current city
+
+        // Trigger city dropdown load on page load
+        if (selectedStateId) {
+            $.getJSON('@Url.Action("GetCitiesByState", "StudentRegister")', { stateId: selectedStateId }, function (data) {
+                $('#City_ID').empty().append('<option value="">Select City</option>');
+                $.each(data, function (i, city) {
+                    var selected = city.City_ID == selectedCityId ? 'selected' : '';
+                    $('#City_ID').append('<option value="' + city.City_ID + '" ' + selected + '>' + city.City_Name + '</option>');
+                });
+            });
+        }
+
+       
+        $('#STATE_ID').change(function () {
+            var stateId = $(this).val();
+            $('#City_ID').empty().append('<option value="">Loading...</option>');
+
+            if (stateId) {
+                $.getJSON('@Url.Action("GetCitiesByState", "StudentRegister")', { stateId: stateId }, function (data) {
+                    $('#City_ID').empty().append('<option value="">Select City</option>');
+                    $.each(data, function (i, city) {
+                        $('#City_ID').append('<option value="' + city.City_ID + '">' + city.City_Name + '</option>');
+                    });
+                });
+            } else {
+                $('#City_ID').empty().append('<option value="">Select City</option>');
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
